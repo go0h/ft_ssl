@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 17:51:57 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/05 21:45:38 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/06 09:25:36 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ static t_darr		*parse_sources(int ac, char **av)
 	t_darr	*srcs;
 
 	i = 0;
-	if ((srcs = ft_da_new(0, sizeof(char*))) == NULL)
+	if (!(srcs = ft_da_new(0, sizeof(char*))))
 		ft_error_handle(__FUNCTION__, MALLOC);
 	while (i < ac)
 	{
 		if (*av[i] != '-')
 		{
-			if ((filename = ft_strdup(av[i])) == NULL ||
-				(srcs = ft_da_add(srcs, &filename)) == NULL)
+			if (!(filename = ft_strdup(av[i])) ||
+				!(srcs = ft_da_add(srcs, &filename)))
 			{
 				ft_strdel(&filename);
 				ft_da_iter(srcs, &free_data);
@@ -71,8 +71,7 @@ t_ssl				*ft_parse_params(int ac, char **av)
 	if (ac > 2)
 		ssl.options = ft_options(ac - 1, &av[1]);
 	ssl.sources = parse_sources(ac - 2, &av[2]);
-	if (ssl.sources == NULL ||
-		(p_ssl = (t_ssl*)ft_memalloc(sizeof(t_ssl))) == NULL)
+	if (!ssl.sources || !(p_ssl = (t_ssl*)ft_memalloc(sizeof(t_ssl))))
 	{
 		ft_da_iter(ssl.sources, &free_data);
 		ft_da_delete(&ssl.sources);

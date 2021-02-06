@@ -6,16 +6,11 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 18:46:28 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/05 21:46:39 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/06 20:18:09 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ssl_md5.h"
-
-void	print_sources(void *data)
-{
-	ft_printf("%s\n", *(size_t*)data);
-}
 
 void	print_ssl(t_ssl *ssl)
 {
@@ -46,4 +41,29 @@ void	free_ssl(t_ssl **ssl)
 		ft_bzero(*ssl, sizeof(t_ssl));
 		free(*ssl);
 	}
+}
+
+u_int64_t	swap_8_bytes(u_int64_t n)
+{
+	return ((n & 0xffULL) << 56 |
+			(n & 0xff00ULL) << 40 |
+			(n & 0xff0000ULL) << 24 |
+			(n & 0xff000000ULL) << 8 |
+			(n & 0xff00000000ULL) >> 8 |
+			(n & 0xff0000000000ULL) >> 24 |
+			(n & 0xff000000000000ULL) >> 40 |
+			(n & 0xff00000000000000ULL) >> 56);
+}
+
+u_int32_t	swap_4_bytes(u_int32_t n)
+{
+	return ((n & 0xffULL) << 24 |
+			(n & 0xff00ULL) << 8 |
+			(n & 0xff0000ULL) >> 8 |
+			(n & 0xff000000ULL) >> 24);
+}
+
+uint32_t	shift_left(uint32_t num, int shift)
+{
+	return (num << shift | (num >> (32 - shift)));
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   options.c                                          :+:      :+:    :+:   */
+/*   ft_options.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 21:22:22 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/05 21:37:10 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/06 09:25:11 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,7 @@ void			ft_error_handle(const char *msg, t_error err)
 	{
 		ft_fprintf(STDERR_FILENO, "%s: ", msg);
 		perror(NULL);
+		if (err == MALLOC)
+			exit(EXIT_FAILURE);
 	}
 }
