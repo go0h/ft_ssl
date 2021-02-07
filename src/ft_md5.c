@@ -6,16 +6,16 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 22:03:47 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/06 21:17:13 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/07 15:11:59 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_md5.h"
 #include <assert.h>
 
-u_int32_t	g_buf[] = { 0, 0, 0, 0 };
+static u_int32_t	g_buf[] = { 0, 0, 0, 0 };
 
-u_int32_t	g_ti[] = {
+static u_int32_t	g_ti[] = {
 	0xD76AA478, 0xE8C7B756, 0x242070DB, 0xC1BDCEEE,
 	0xF57C0FAF, 0x4787C62A, 0xA8304613, 0xFD469501,
 	0x698098D8, 0x8B44F7AF, 0xFFFF5BB1, 0x895CD7BE,
@@ -75,24 +75,24 @@ t_md5_round	g_r[] = {
 	{4, 6}, {11, 10}, {2, 15}, {9, 21}
 };
 
-void		init_buf(uint32_t *h)
+static void		init_buf(uint32_t *h)
 {
-	h[0] = 0x67452301;
-	h[1] = 0xEFCDAB89;
-	h[2] = 0x98BADCFE;
-	h[3] = 0x10325476;
+	h[A] = 0x67452301;
+	h[B] = 0xEFCDAB89;
+	h[C] = 0x98BADCFE;
+	h[D] = 0x10325476;
 }
 
 void		print_md5_hash(uint32_t *h)
 {
 	ft_printf("%08x%08x%08x%08x\n",
-	swap_4_bytes(h[0]),
-	swap_4_bytes(h[1]),
-	swap_4_bytes(h[2]),
-	swap_4_bytes(h[3]));
+	swap_4_bytes(h[A]),
+	swap_4_bytes(h[B]),
+	swap_4_bytes(h[C]),
+	swap_4_bytes(h[D]));
 }
 
-size_t		allign_data(char **data, size_t size)
+static size_t		allign_data(char **data, size_t size)
 {
 	char	*new_data;
 	size_t	zeros;
@@ -124,11 +124,11 @@ void		ft_md5_round(u_int32_t *x, uint32_t *c)
 	i = 0;
 	while (i < 64)
 	{
-		f = c[0] + func[i / 16](c[1], c[2], c[3]) + x[g_r[i].k] + g_ti[i];
-		c[0] = c[3];
-		c[3] = c[2];
-		c[2] = c[1];
-		c[1] += shift_left(f, g_r[i].s);
+		f = c[A] + func[i / 16](c[B], c[C], c[D]) + x[g_r[i].k] + g_ti[i];
+		c[A] = c[D];
+		c[D] = c[C];
+		c[C] = c[B];
+		c[B] += rot_l(f, g_r[i].s);
 		i++;
 	}
 }
@@ -148,10 +148,10 @@ void		ft_md5(char *data, size_t size)
 	{
 		ft_memcpy(&c, &g_buf, sizeof(uint32_t) * 4);
 		ft_md5_round((u_int32_t*)&data[i], (u_int32_t*)&c);
-		g_buf[0] += c[0];
-		g_buf[1] += c[1];
-		g_buf[2] += c[2];
-		g_buf[3] += c[3];
+		g_buf[A] += c[A];
+		g_buf[B] += c[B];
+		g_buf[C] += c[C];
+		g_buf[D] += c[D];
 		i += 64;
 	}
 	print_md5_hash(g_buf);

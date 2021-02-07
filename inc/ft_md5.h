@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 21:10:49 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/06 21:15:54 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/07 12:12:23 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,6 @@
 # define FT_MD5_H
 
 #include "ft_ssl_md5.h"
-
-enum
-{
-	A,
-	B,
-	C,
-	D
-};
 
 typedef struct	s_md5_round
 {

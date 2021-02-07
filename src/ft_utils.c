@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 18:46:28 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/06 20:18:09 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/07 15:49:49 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,12 @@ u_int32_t	swap_4_bytes(u_int32_t n)
 			(n & 0xff000000ULL) >> 24);
 }
 
-uint32_t	shift_left(uint32_t num, int shift)
+uint32_t	rot_l(uint32_t num, int shift)
 {
 	return (num << shift | (num >> (32 - shift)));
+}
+
+uint32_t	rot_r(uint32_t num, int shift)
+{
+	return (num >> shift | (num << (32 - shift)));
 }

@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 21:17:00 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/06 15:46:22 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/07 15:12:12 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ typedef struct	s_ssl
 	t_darr		*sources;
 }				t_ssl;
 
+enum { A, B, C, D, E, F, G, H };
+
 size_t			ft_options(int ac, char **av);
 
 t_ssl			*ft_parse_params(int ac, char **av);
@@ -49,6 +51,7 @@ void			ft_md5(char *data, size_t opts);
 void			ft_sha256(char *data, size_t opts);
 
 long			ft_read_file(int fd, char **data);
+
 
 /*
 ** UTILITY FUNCTIONS
@@ -66,6 +69,8 @@ u_int64_t		swap_8_bytes(u_int64_t n);
 
 u_int32_t		swap_4_bytes(u_int32_t n);
 
-uint32_t		shift_left(uint32_t num, int shift);
+uint32_t		rot_l(uint32_t num, int shift);
+
+uint32_t		rot_r(uint32_t num, int shift);
 
 #endif
