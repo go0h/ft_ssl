@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 17:22:02 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/07 16:25:45 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/08 22:16:01 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,14 @@ static void	init_buf(u_int32_t *b)
 	b[H] = 0x5BE0CD19;
 }
 
-void		print_sha256_hash(uint32_t *h)
+void		print_sha256_hash(u_int32_t *h)
 {
 	ft_printf("%08x%08x%08x%08x%08x%08x%08x%08x\n",
-	swap_4_bytes(h[A]), swap_4_bytes(h[B]),
-	swap_4_bytes(h[C]), swap_4_bytes(h[D]),
-	swap_4_bytes(h[E]), swap_4_bytes(h[F]),
-	swap_4_bytes(h[G]), swap_4_bytes(h[H]));
+	h[A], h[B], h[C], h[D], h[E], h[F], h[G], h[H]);
+	// swap_4_bytes(h[A]), swap_4_bytes(h[B]),
+	// swap_4_bytes(h[C]), swap_4_bytes(h[D]),
+	// swap_4_bytes(h[E]), swap_4_bytes(h[F]),
+	// swap_4_bytes(h[G]), swap_4_bytes(h[H]));
 }
 
 /*
@@ -103,7 +104,12 @@ void		ft_sha256_round(u_int32_t *x, uint32_t *c)
 	u_int32_t		s1;
 	u_int32_t		w[64];
 
-	ft_memcpy((u_int32_t*)&w, x, sizeof(u_int32_t) * 16);
+	i = 0;
+	while (i < 16)
+	{
+		w[i] = swap_4_bytes(x[i]);
+		++i;
+	}
 	ft_bzero((u_int32_t*)&w[16], sizeof(u_int32_t) * 48);
 	i = 16;
 	while (i < 64)
@@ -128,7 +134,7 @@ static size_t		allign_data(char **data, size_t size)
 		return (0);
 	ft_memcpy(new_data, *data, size);
 	new_data[size] = 1 << 7;
-	msg_length = size * __CHAR_BIT__;
+	msg_length = swap_8_bytes(size * __CHAR_BIT__);
 	ft_memcpy(&new_data[size + 1 + zeros], &msg_length, 8);
 	free(*data);
 	*data = new_data;
@@ -148,8 +154,7 @@ void ft_sha256(char *data, size_t size)
 	i = 0;
 	while (i < size)
 	{
-		ft_memcpy(&c, &g_buf, sizeof(uint32_t) * 8);
-		print_sha256_hash((u_int32_t*)&c);
+		ft_memcpy(&c, &g_buf, sizeof(u_int32_t) * 8);
 		ft_sha256_round((u_int32_t*)&data[i], (u_int32_t*)&c);
 		g_buf[A] += c[A];
 		g_buf[B] += c[B];
@@ -162,4 +167,5 @@ void ft_sha256(char *data, size_t size)
 		i += 64;
 	}
 	print_sha256_hash(g_buf);
+	free(data);
 }

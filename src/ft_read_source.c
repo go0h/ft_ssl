@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 22:12:08 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/05 22:34:04 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/08 22:10:01 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ long		ft_read_file(int fd, char **data)
 		ft_memcpy(temp, *data, res);
 		ft_memcpy(&temp[res], &buf, n);
 		swap(data, &temp);
+		free(temp);
 		res += n;
 	}
 	return (res);

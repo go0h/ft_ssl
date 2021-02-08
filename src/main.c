@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 21:06:51 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/06 14:46:36 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/08 22:06:29 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static void	process_sources(t_ssl *ssl)
 	}
 	else
 		process_fd(ssl, STDIN_FILENO, "stdin");
-	free_ssl(&ssl);
 }
 
 int			main(int argc, char **argv)

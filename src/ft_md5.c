@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 22:03:47 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/07 15:11:59 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/08 22:09:29 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,4 +155,5 @@ void		ft_md5(char *data, size_t size)
 		i += 64;
 	}
 	print_md5_hash(g_buf);
+	free(data);
 }
