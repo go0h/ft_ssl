@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 17:51:57 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/06 09:25:36 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/08 23:13:40 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static t_hash_func	get_hash_func(char *param)
 {
 	size_t				i;
 	static t_hash_func	funcs[] = {
-	{ "md5", &ft_md5 },
-	{ "sha256", &ft_sha256 } };
+	{ "md5", &ft_md5_init, &ft_md5, &ft_get_md5_hash, 16 },
+	{ "sha256", &ft_sha256_init, &ft_sha256, &ft_get_sha256_hash, 32 } };
 
 	i = 0;
 	while (i < sizeof(funcs) / sizeof(t_hash_func))

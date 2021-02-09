@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 21:17:00 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/07 15:12:12 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/08 23:53:48 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,11 @@
 # include "libft.h"
 # include <stdio.h>
 
-typedef void	(*t_func)(char *data, size_t size);
+# define MEGABYTE 1048576
+
+typedef void	(*init_func)(void);
+typedef void	(*calc_func)(char *data, size_t cur_size, size_t overall);
+typedef char	*(*get_func)(void);
 
 typedef enum	e_error
 {
@@ -30,7 +34,10 @@ typedef enum	e_error
 typedef struct	s_hash_func
 {
 	char		name[10];
-	t_func		func;
+	init_func	init;
+	calc_func	func;
+	get_func	get;
+	int			hash_size;
 }				t_hash_func;
 
 typedef struct	s_ssl
@@ -46,9 +53,13 @@ size_t			ft_options(int ac, char **av);
 
 t_ssl			*ft_parse_params(int ac, char **av);
 
-void			ft_md5(char *data, size_t opts);
+void			ft_md5_init(void);
+void			ft_md5(char *data, size_t cur_size, size_t overall);
+char			*ft_get_md5_hash(void);
 
-void			ft_sha256(char *data, size_t opts);
+void			ft_sha256_init(void);
+void			ft_sha256(char *data, size_t cur_size, size_t overall);
+char			*ft_get_sha256_hash(void);
 
 long			ft_read_file(int fd, char **data);
 

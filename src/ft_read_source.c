@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 22:12:08 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/08 22:10:01 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/08 22:31:41 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ long		ft_read_file(int fd, char **data)
 {
 	long	n;
 	long	res;
-	char	buf[BUFF_SIZE];
+	char	buf[MEGABYTE];
 	char	*temp;
 
 	res = 0;
 	if (!(*data = ft_memalloc(1)))
 		return (-1);
-	while ((n = read(fd, buf, BUFF_SIZE)) > 0)
+	while ((n = read(fd, buf, MEGABYTE)) > 0)
 	{
 		if (!(temp = ft_memalloc(res + n)))
 		{

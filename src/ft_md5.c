@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 22:03:47 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/08 22:09:29 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/08 23:54:06 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,22 @@ t_md5_round	g_r[] = {
 	{4, 6}, {11, 10}, {2, 15}, {9, 21}
 };
 
-static void		init_buf(uint32_t *h)
+void		ft_md5_init(void)
 {
-	h[A] = 0x67452301;
-	h[B] = 0xEFCDAB89;
-	h[C] = 0x98BADCFE;
-	h[D] = 0x10325476;
+	g_buf[A] = 0x67452301;
+	g_buf[B] = 0xEFCDAB89;
+	g_buf[C] = 0x98BADCFE;
+	g_buf[D] = 0x10325476;
+}
+
+char		*ft_get_md5_hash(void)
+{
+	uint32_t	*hash;
+
+	if (!(hash = ft_memalloc(sizeof(uint32_t) * 4)))
+		return (NULL);
+	ft_memcpy(hash, g_buf, sizeof(uint32_t) * 4);
+	return ((char*)hash);
 }
 
 void		print_md5_hash(uint32_t *h)
@@ -90,25 +100,6 @@ void		print_md5_hash(uint32_t *h)
 	swap_4_bytes(h[B]),
 	swap_4_bytes(h[C]),
 	swap_4_bytes(h[D]));
-}
-
-static size_t		allign_data(char **data, size_t size)
-{
-	char	*new_data;
-	size_t	zeros;
-	size_t	msg_length;
-
-	zeros = (size + 1) % 64;
-	zeros = zeros > 56 ? (64 - zeros) + 56 : 56 - zeros;
-	if (!(new_data = (char*)ft_memalloc(size + 1 + zeros + 8)))
-		return (0);
-	ft_memcpy(new_data, *data, size);
-	new_data[size] = 1 << 7;
-	msg_length = size * __CHAR_BIT__;
-	ft_memcpy(&new_data[size + 1 + zeros], &msg_length, 8);
-	free(*data);
-	*data = new_data;
-	return (size + 1 + zeros + 8);
 }
 
 /*
@@ -133,18 +124,37 @@ void		ft_md5_round(u_int32_t *x, uint32_t *c)
 	}
 }
 
-void		ft_md5(char *data, size_t size)
+static size_t		allign_data(char **data, size_t size)
+{
+	char	*new_data;
+	size_t	zeros;
+	size_t	msg_length;
+
+	zeros = (size + 1) % 64;
+	zeros = zeros > 56 ? (64 - zeros) + 56 : 56 - zeros;
+	if (!(new_data = (char*)ft_memalloc(size + 1 + zeros + 8)))
+		return (0);
+	ft_memcpy(new_data, *data, size);
+	new_data[size] = 1 << 7;
+	msg_length = size * __CHAR_BIT__;
+	ft_memcpy(&new_data[size + 1 + zeros], &msg_length, 8);
+	free(*data);
+	*data = new_data;
+	return (size + 1 + zeros + 8);
+}
+
+void		ft_md5(char *data, size_t cur_size, size_t overall)
 {
 	size_t			i;
 	static uint32_t	c[4] = {0, 0, 0, 0};
 
-	if (!(size = allign_data(&data, size)))
+	cur_size *= 0;
+	if (!(overall = allign_data(&data, overall)))
 		return ;
-	init_buf(g_buf);
 	// temporary
-	assert(size % 64 == 0);
+	assert(overall % 64 == 0);
 	i = 0;
-	while (i < size)
+	while (i < overall)
 	{
 		ft_memcpy(&c, &g_buf, sizeof(uint32_t) * 4);
 		ft_md5_round((u_int32_t*)&data[i], (u_int32_t*)&c);
@@ -154,6 +164,5 @@ void		ft_md5(char *data, size_t size)
 		g_buf[D] += c[D];
 		i += 64;
 	}
-	print_md5_hash(g_buf);
 	free(data);
 }
