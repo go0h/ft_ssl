@@ -6,13 +6,13 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 18:46:28 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/07 23:53:32 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/09 21:58:13 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ssl_md5.h"
 
-void	print_ssl(t_ssl *ssl)
+void		print_ssl(t_ssl *ssl)
 {
 	size_t i;
 
@@ -27,20 +27,14 @@ void	print_ssl(t_ssl *ssl)
 	}
 }
 
-void	free_data(void *data)
+uint32_t	rot_l(uint32_t num, int shift)
 {
-	free((char*)*(size_t*)data);
+	return (num << shift | (num >> (32 - shift)));
 }
 
-void	free_ssl(t_ssl **ssl)
+uint32_t	rot_r(uint32_t num, int shift)
 {
-	if (ssl != NULL && *ssl != NULL)
-	{
-		ft_da_iter((*ssl)->sources, &free_data);
-		ft_da_delete(&(*ssl)->sources);
-		ft_bzero(*ssl, sizeof(t_ssl));
-		free(*ssl);
-	}
+	return (num >> shift | (num << (32 - shift)));
 }
 
 u_int64_t	swap_8_bytes(u_int64_t n)
@@ -61,14 +55,4 @@ u_int32_t	swap_4_bytes(u_int32_t n)
 			(n & 0xff00ULL) << 8 |
 			(n & 0xff0000ULL) >> 8 |
 			(n & 0xff000000ULL) >> 24);
-}
-
-uint32_t	rot_l(uint32_t num, int shift)
-{
-	return (num << shift | (num >> (32 - shift)));
-}
-
-uint32_t	rot_r(uint32_t num, int shift)
-{
-	return (num >> shift | (num << (32 - shift)));
 }

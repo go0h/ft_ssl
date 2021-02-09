@@ -6,16 +6,16 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 17:22:02 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/08 23:54:14 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/09 22:12:31 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_ssl_md5.h"
+#include "ft_sha.h"
 #include <assert.h>
 
-static u_int32_t	g_buf[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+static uint32_t	g_buf[8];
 
-static u_int32_t	g_ti[] = {
+static uint32_t	g_ti[] = {
 	0x428A2F98, 0x71374491, 0xB5C0FBCF, 0xE9B5DBA5,
 	0x3956C25B, 0x59F111F1, 0x923F82A4, 0xAB1C5ED5,
 	0xD807AA98, 0x12835B01, 0x243185BE, 0x550C7DC3,
@@ -32,9 +32,9 @@ static u_int32_t	g_ti[] = {
 	0x391C0CB3, 0x4ED8AA4A, 0x5B9CCA4F, 0x682E6FF3,
 	0x748F82EE, 0x78A5636F, 0x84C87814, 0x8CC70208,
 	0x90BEFFFA, 0xA4506CEB, 0xBEF9A3F7, 0xC67178F2
- };
+};
 
-void	ft_sha256_init(void)
+void			ft_sha256_init(void)
 {
 	g_buf[A] = 0x6A09E667;
 	g_buf[B] = 0xBB67AE85;
@@ -46,7 +46,7 @@ void	ft_sha256_init(void)
 	g_buf[H] = 0x5BE0CD19;
 }
 
-char		*ft_get_sha256_hash(void)
+char			*ft_get_sha256_hash(void)
 {
 	int			i;
 	uint32_t	*hash;
@@ -54,19 +54,12 @@ char		*ft_get_sha256_hash(void)
 	if (!(hash = ft_memalloc(sizeof(uint32_t) * 8)))
 		return (NULL);
 	i = 0;
-	while(i < 8)
+	while (i < 8)
 	{
 		hash[i] = swap_4_bytes(g_buf[i]);
 		++i;
 	}
-
 	return ((char*)hash);
-}
-
-void		print_sha256_hash(u_int32_t *h)
-{
-	ft_printf("%08x%08x%08x%08x%08x%08x%08x%08x\n",
-	h[A], h[B], h[C], h[D], h[E], h[F], h[G], h[H]);
 }
 
 /*
@@ -78,11 +71,11 @@ void		print_sha256_hash(u_int32_t *h)
 **	t1 := h + Σ1 + Ch + k[i] + w[i]
 */
 
-void		ft_sha256_main_cycle(u_int32_t *w, uint32_t *c)
+static void		ft_sha256_main_cycle(uint32_t *w, uint32_t *c)
 {
 	int			i;
-	u_int32_t	t1;
-	u_int32_t	t2;
+	uint32_t	t1;
+	uint32_t	t2;
 
 	i = 0;
 	while (i < 64)
@@ -110,12 +103,12 @@ void		ft_sha256_main_cycle(u_int32_t *w, uint32_t *c)
 ** w[i] := w[i-16] + s0 + w[i-7] + s1
 */
 
-void		ft_sha256_round(u_int32_t *x, uint32_t *c)
+static void		ft_sha256_round(uint32_t *x, uint32_t *c)
 {
-	int				i;
-	u_int32_t		s0;
-	u_int32_t		s1;
-	u_int32_t		w[64];
+	int			i;
+	uint32_t	s0;
+	uint32_t	s1;
+	uint32_t	w[64];
 
 	i = 0;
 	while (i < 16)
@@ -123,7 +116,7 @@ void		ft_sha256_round(u_int32_t *x, uint32_t *c)
 		w[i] = swap_4_bytes(x[i]);
 		++i;
 	}
-	ft_bzero((u_int32_t*)&w[16], sizeof(u_int32_t) * 48);
+	ft_bzero((uint32_t*)&w[16], sizeof(uint32_t) * 48);
 	i = 16;
 	while (i < 64)
 	{
@@ -132,43 +125,26 @@ void		ft_sha256_round(u_int32_t *x, uint32_t *c)
 		w[i] = w[i - 16] + s0 + w[i - 7] + s1;
 		i++;
 	}
-	ft_sha256_main_cycle((u_int32_t*)&w, c);
+	ft_sha256_main_cycle((uint32_t*)&w, c);
 }
 
-static size_t		allign_data(char **data, size_t size)
+void			ft_sha256(char *data, size_t cur_size, size_t overall)
 {
-	char	*new_data;
-	size_t	zeros;
-	size_t	msg_length;
+	size_t		i;
+	uint32_t	c[8];
 
-	zeros = (size + 1) % 64;
-	zeros = zeros > 56 ? (64 - zeros) + 56 : 56 - zeros;
-	if (!(new_data = (char*)ft_memalloc(size + 1 + zeros + 8)))
-		return (0);
-	ft_memcpy(new_data, *data, size);
-	new_data[size] = 1 << 7;
-	msg_length = swap_8_bytes(size * __CHAR_BIT__);
-	ft_memcpy(&new_data[size + 1 + zeros], &msg_length, 8);
-	free(*data);
-	*data = new_data;
-	return (size + 1 + zeros + 8);
-}
-
-void ft_sha256(char *data, size_t cur_size, size_t overall)
-{
-	size_t			i;
-	static uint32_t	c[] = {0, 0, 0, 0, 0, 0, 0, 0};
-
-	cur_size *= 0;
-	if (!(overall = allign_data(&data, overall)))
-		return ;
-	// temporary
-	assert(overall % 64 == 0);
-	i = 0;
-	while (i < overall)
+	if (cur_size != BATCH_SIZE)
 	{
-		ft_memcpy(&c, &g_buf, sizeof(u_int32_t) * 8);
-		ft_sha256_round((u_int32_t*)&data[i], (u_int32_t*)&c);
+		if (!(cur_size = allign_sha256_data(&data, cur_size, overall)))
+			return ;
+	}
+	// temporary
+	assert(cur_size % 64 == 0);
+	i = 0;
+	while (i < cur_size)
+	{
+		ft_memcpy(&c, &g_buf, sizeof(uint32_t) * 8);
+		ft_sha256_round((uint32_t*)&data[i], (uint32_t*)&c);
 		g_buf[A] += c[A];
 		g_buf[B] += c[B];
 		g_buf[C] += c[C];
@@ -179,5 +155,6 @@ void ft_sha256(char *data, size_t cur_size, size_t overall)
 		g_buf[H] += c[H];
 		i += 64;
 	}
-	free(data);
+	if (cur_size != BATCH_SIZE)
+		free(data);
 }

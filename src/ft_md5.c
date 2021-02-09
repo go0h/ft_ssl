@@ -6,16 +6,16 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 22:03:47 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/08 23:54:06 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/09 22:14:55 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_md5.h"
 #include <assert.h>
 
-static u_int32_t	g_buf[] = { 0, 0, 0, 0 };
+static uint32_t		g_buf[4];
 
-static u_int32_t	g_ti[] = {
+static uint32_t		g_ti[] = {
 	0xD76AA478, 0xE8C7B756, 0x242070DB, 0xC1BDCEEE,
 	0xF57C0FAF, 0x4787C62A, 0xA8304613, 0xFD469501,
 	0x698098D8, 0x8B44F7AF, 0xFFFF5BB1, 0x895CD7BE,
@@ -35,28 +35,10 @@ static u_int32_t	g_ti[] = {
 
 /*
 **	[abcd k s i] a = b + ((a + F(b,c,d) + X[k] + T[i]) <<< s)
-**	[ABCD  0 7  1][DABC  1 12  2][CDAB  2 17  3][BCDA  3 22  4]
-**	[ABCD  4 7  5][DABC  5 12  6][CDAB  6 17  7][BCDA  7 22  8]
-**	[ABCD  8 7  9][DABC  9 12 10][CDAB 10 17 11][BCDA 11 22 12]
-**	[ABCD 12 7 13][DABC 13 12 14][CDAB 14 17 15][BCDA 15 22 16]
-**
-**	[ABCD  1 5 17][DABC  6 9 18][CDAB 11 14 19][BCDA  0 20 20]
-**	[ABCD  5 5 21][DABC 10 9 22][CDAB 15 14 23][BCDA  4 20 24]
-**	[ABCD  9 5 25][DABC 14 9 26][CDAB  3 14 27][BCDA  8 20 28]
-**	[ABCD 13 5 29][DABC  2 9 30][CDAB  7 14 31][BCDA 12 20 32]
-**
-**	[ABCD  5 4 33][DABC  8 11 34][CDAB 11 16 35][BCDA 14 23 36]
-**	[ABCD  1 4 37][DABC  4 11 38][CDAB  7 16 39][BCDA 10 23 40]
-**	[ABCD 13 4 41][DABC  0 11 42][CDAB  3 16 43][BCDA  6 23 44]
-**	[ABCD  9 4 45][DABC 12 11 46][CDAB 15 16 47][BCDA  2 23 48]
-**
-**	[ABCD  0 6 49][DABC  7 10 50][CDAB 14 15 51][BCDA  5 21 52]
-**	[ABCD 12 6 53][DABC  3 10 54][CDAB 10 15 55][BCDA  1 21 56]
-**	[ABCD  8 6 57][DABC 15 10 58][CDAB  6 15 59][BCDA 13 21 60]
-**	[ABCD  4 6 61][DABC 11 10 62][CDAB  2 15 63][BCDA  9 21 64]
+**	{k, s}
 */
 
-t_md5_round	g_r[] = {
+static t_md5_round	g_r[] = {
 	{0, 7}, {1, 12}, {2, 17}, {3, 22},
 	{4, 7}, {5, 12}, {6, 17}, {7, 22},
 	{8, 7}, {9, 12}, {10, 17}, {11, 22},
@@ -75,7 +57,7 @@ t_md5_round	g_r[] = {
 	{4, 6}, {11, 10}, {2, 15}, {9, 21}
 };
 
-void		ft_md5_init(void)
+void				ft_md5_init(void)
 {
 	g_buf[A] = 0x67452301;
 	g_buf[B] = 0xEFCDAB89;
@@ -83,7 +65,7 @@ void		ft_md5_init(void)
 	g_buf[D] = 0x10325476;
 }
 
-char		*ft_get_md5_hash(void)
+char				*ft_get_md5_hash(void)
 {
 	uint32_t	*hash;
 
@@ -93,24 +75,15 @@ char		*ft_get_md5_hash(void)
 	return ((char*)hash);
 }
 
-void		print_md5_hash(uint32_t *h)
-{
-	ft_printf("%08x%08x%08x%08x\n",
-	swap_4_bytes(h[A]),
-	swap_4_bytes(h[B]),
-	swap_4_bytes(h[C]),
-	swap_4_bytes(h[D]));
-}
-
 /*
 ** [abcd k s i] a = b + ((a + F(b,c,d) + X[k] + T[i]) <<< s)
 */
 
-void		ft_md5_round(u_int32_t *x, uint32_t *c)
+static void			ft_md5_round(uint32_t *x, uint32_t *c)
 {
-	int				i;
-	u_int32_t		f;
-	static round_f	func[] = {&fun_f, &fun_g, &fun_h, &fun_i};
+	int					i;
+	uint32_t			f;
+	static t_round_f	func[] = {&fun_f, &fun_g, &fun_h, &fun_i};
 
 	i = 0;
 	while (i < 64)
@@ -124,45 +97,47 @@ void		ft_md5_round(u_int32_t *x, uint32_t *c)
 	}
 }
 
-static size_t		allign_data(char **data, size_t size)
+static size_t		allign_data(char **data, size_t cur_size, size_t overall)
 {
-	char	*new_data;
-	size_t	zeros;
-	size_t	msg_length;
+	char		*new_data;
+	size_t		zeros;
+	uint64_t	msg_length;
 
-	zeros = (size + 1) % 64;
+	zeros = (overall + 1) % 64;
 	zeros = zeros > 56 ? (64 - zeros) + 56 : 56 - zeros;
-	if (!(new_data = (char*)ft_memalloc(size + 1 + zeros + 8)))
+	if (!(new_data = (char*)ft_memalloc(cur_size + 1 + zeros + 8)))
 		return (0);
-	ft_memcpy(new_data, *data, size);
-	new_data[size] = 1 << 7;
-	msg_length = size * __CHAR_BIT__;
-	ft_memcpy(&new_data[size + 1 + zeros], &msg_length, 8);
-	free(*data);
+	ft_memcpy(new_data, *data, cur_size);
+	new_data[cur_size] = 0x80;
+	msg_length = overall * __CHAR_BIT__;
+	ft_memcpy(&new_data[cur_size + 1 + zeros], &msg_length, 8);
 	*data = new_data;
-	return (size + 1 + zeros + 8);
+	return (cur_size + 1 + zeros + 8);
 }
 
-void		ft_md5(char *data, size_t cur_size, size_t overall)
+void				ft_md5(char *data, size_t cur_size, size_t overall)
 {
-	size_t			i;
-	static uint32_t	c[4] = {0, 0, 0, 0};
+	size_t		i;
+	uint32_t	c[4];
 
-	cur_size *= 0;
-	if (!(overall = allign_data(&data, overall)))
-		return ;
+	if (cur_size != BATCH_SIZE)
+	{
+		if (!(cur_size = allign_data(&data, cur_size, overall)))
+			return ;
+	}
 	// temporary
-	assert(overall % 64 == 0);
+	assert(cur_size % 64 == 0);
 	i = 0;
-	while (i < overall)
+	while (i < cur_size)
 	{
 		ft_memcpy(&c, &g_buf, sizeof(uint32_t) * 4);
-		ft_md5_round((u_int32_t*)&data[i], (u_int32_t*)&c);
+		ft_md5_round((uint32_t*)&data[i], (uint32_t*)&c);
 		g_buf[A] += c[A];
 		g_buf[B] += c[B];
 		g_buf[C] += c[C];
 		g_buf[D] += c[D];
 		i += 64;
 	}
-	free(data);
+	if (cur_size != BATCH_SIZE)
+		free(data);
 }

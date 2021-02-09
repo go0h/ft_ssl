@@ -9,7 +9,7 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/ft_ssl_md5",
-			"args": ["md5", "empty"],
+			"args": ["sha256", "~/Downloads/TNoodle-WCA-1.0.1.jar"],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],

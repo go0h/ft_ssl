@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 17:51:57 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/08 23:13:40 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/09 22:11:17 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,22 @@ static t_darr		*parse_sources(int ac, char **av)
 		++i;
 	}
 	return (ft_da_shrink(srcs));
+}
+
+void				free_data(void *data)
+{
+	free((char*)*(size_t*)data);
+}
+
+void				free_ssl(t_ssl **ssl)
+{
+	if (ssl != NULL && *ssl != NULL)
+	{
+		ft_da_iter((*ssl)->sources, &free_data);
+		ft_da_delete(&(*ssl)->sources);
+		ft_bzero(*ssl, sizeof(t_ssl));
+		free(*ssl);
+	}
 }
 
 t_ssl				*ft_parse_params(int ac, char **av)
