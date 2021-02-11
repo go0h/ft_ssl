@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_sha256.c                                        :+:      :+:    :+:   */
+/*   ft_sha224.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/04 17:22:02 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/11 22:27:53 by astripeb         ###   ########.fr       */
+/*   Created: 2021/02/09 22:22:24 by astripeb          #+#    #+#             */
+/*   Updated: 2021/02/11 22:28:07 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,27 @@
 
 static uint32_t	g_buf[8];
 
-void			ft_sha256_init(void)
+void			ft_sha224_init(void)
 {
-	g_buf[A] = 0x6A09E667;
-	g_buf[B] = 0xBB67AE85;
-	g_buf[C] = 0x3C6EF372;
-	g_buf[D] = 0xA54FF53A;
-	g_buf[E] = 0x510E527F;
-	g_buf[F] = 0x9B05688C;
-	g_buf[G] = 0x1F83D9AB;
-	g_buf[H] = 0x5BE0CD19;
+	g_buf[A] = 0xC1059ED8;
+	g_buf[B] = 0x367CD507;
+	g_buf[C] = 0x3070DD17;
+	g_buf[D] = 0xF70E5939;
+	g_buf[E] = 0xFFC00B31;
+	g_buf[F] = 0x68581511;
+	g_buf[G] = 0x64F98FA7;
+	g_buf[H] = 0xBEFA4FA4;
 }
 
-char			*ft_get_sha256_hash(void)
+char			*ft_get_sha224_hash(void)
 {
 	int			i;
 	uint32_t	*hash;
 
-	if (!(hash = ft_memalloc(sizeof(uint32_t) * 8)))
+	if (!(hash = ft_memalloc(sizeof(uint32_t) * 7)))
 		return (NULL);
 	i = 0;
-	while (i < 8)
+	while (i < 7)
 	{
 		hash[i] = swap_4_bytes(g_buf[i]);
 		++i;
@@ -43,7 +43,7 @@ char			*ft_get_sha256_hash(void)
 	return ((char*)hash);
 }
 
-void			ft_sha256(char *data, size_t cur_size, size_t overall)
+void			ft_sha224(char *data, size_t cur_size, size_t overall)
 {
 	size_t		i;
 	uint32_t	c[8];

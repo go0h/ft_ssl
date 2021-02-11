@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 21:17:00 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/09 22:10:09 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/11 22:38:46 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,30 @@ void			ft_sha256(char *data, size_t cur_size, size_t overall);
 char			*ft_get_sha256_hash(void);
 
 /*
+** SHA224 - Hash functions
+*/
+
+void			ft_sha224_init(void);
+void			ft_sha224(char *data, size_t cur_size, size_t overall);
+char			*ft_get_sha224_hash(void);
+
+/*
+** SHA512 - Hash functions
+*/
+
+void			ft_sha512_init(void);
+void			ft_sha512(char *data, size_t cur_size, size_t overall);
+char			*ft_get_sha512_hash(void);
+
+/*
+** SHA384 - Hash functions
+*/
+
+void			ft_sha384_init(void);
+void			ft_sha384(char *data, size_t cur_size, size_t overall);
+char			*ft_get_sha384_hash(void);
+
+/*
 ** UTILITY FUNCTIONS
 */
 
@@ -81,12 +105,16 @@ void			print_ssl(t_ssl *ssl);
 
 void			free_data(void *data);
 
-uint32_t		rot_l(uint32_t num, int shift);
+uint32_t		rot32_l(uint32_t num, int shift);
 
-uint32_t		rot_r(uint32_t num, int shift);
+uint32_t		rot32_r(uint32_t num, int shift);
 
-uint64_t		swap_8_bytes(uint64_t n);
+uint64_t		rot64_l(uint64_t num, int shift);
+
+uint64_t		rot64_r(uint64_t num, int shift);
 
 uint32_t		swap_4_bytes(uint32_t n);
+
+uint64_t		swap_8_bytes(uint64_t n);
 
 #endif

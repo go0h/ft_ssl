@@ -8,12 +8,11 @@
 			"name": "(gdb) Launch",
 			"type": "cppdbg",
 			"request": "launch",
-			"program": "${workspaceFolder}/ft_ssl_md5",
-			"args": ["sha256", "~/Downloads/TNoodle-WCA-1.0.1.jar"],
+			"program": "${workspaceFolder}/a.out",
+			"args": ["a.out", "~/Downloads/TNoodle-WCA-1.0.1.jar"],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],
-			"console": "externalTerminal",
 			"MIMode": "gdb",
 			"setupCommands": [
 				{

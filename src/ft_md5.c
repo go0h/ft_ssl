@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 22:03:47 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/09 22:14:55 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/11 21:39:18 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static void			ft_md5_round(uint32_t *x, uint32_t *c)
 		c[A] = c[D];
 		c[D] = c[C];
 		c[C] = c[B];
-		c[B] += rot_l(f, g_r[i].s);
+		c[B] += rot32_l(f, g_r[i].s);
 		i++;
 	}
 }

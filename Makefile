@@ -6,7 +6,7 @@
 #    By: astripeb <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/03 21:08:35 by astripeb          #+#    #+#              #
-#    Updated: 2021/02/09 22:08:09 by astripeb         ###   ########.fr        #
+#    Updated: 2021/02/11 22:39:16 by astripeb         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,8 +42,11 @@ DEPEND				:= -MD -MT
 #									SOURCE FILES					 		   #
 ################################################################################
 
-SRC					:= main.c ft_options.c ft_md5.c ft_sha256.c ft_parse_params.c\
-					ft_utils.c ft_md5_utils.c ft_sha_utils.c
+SRC					:= main.c ft_options.c ft_parse_params.c\
+					ft_md5.c ft_md5_utils.c\
+					ft_sha256.c ft_sha224.c ft_sha256_utils.c\
+					ft_sha512.c ft_sha384.c ft_sha512_utils.c\
+					ft_utils.c
 
 ################################################################################
 #																	 		   #

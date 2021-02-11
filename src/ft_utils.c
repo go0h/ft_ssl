@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 18:46:28 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/09 21:58:13 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/11 21:40:01 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,24 @@ void		print_ssl(t_ssl *ssl)
 	}
 }
 
-uint32_t	rot_l(uint32_t num, int shift)
+uint32_t	rot32_l(uint32_t num, int shift)
 {
 	return (num << shift | (num >> (32 - shift)));
 }
 
-uint32_t	rot_r(uint32_t num, int shift)
+uint32_t	rot32_r(uint32_t num, int shift)
 {
 	return (num >> shift | (num << (32 - shift)));
+}
+
+uint64_t	rot64_l(uint64_t num, int shift)
+{
+	return (num << shift | (num >> (64 - shift)));
+}
+
+uint64_t	rot64_r(uint64_t num, int shift)
+{
+	return (num >> shift | (num << (64 - shift)));
 }
 
 u_int64_t	swap_8_bytes(u_int64_t n)
