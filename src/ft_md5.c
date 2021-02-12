@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 22:03:47 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/11 21:39:18 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/12 20:21:21 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,6 @@ void				ft_md5(char *data, size_t cur_size, size_t overall)
 		if (!(cur_size = allign_data(&data, cur_size, overall)))
 			return ;
 	}
-	// temporary
-	assert(cur_size % 64 == 0);
 	i = 0;
 	while (i < cur_size)
 	{

@@ -6,34 +6,39 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 17:51:57 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/11 22:38:21 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/12 21:32:38 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ssl_md5.h"
 
-static t_hash_func	get_hash_func(char *param)
-{
-	size_t				i;
-	static t_hash_func	funcs[] = {
+t_hash_func	g_funcs[] = {
 	{ "md5", &ft_md5_init, &ft_md5, &ft_get_md5_hash, 16 },
 	{ "sha256", &ft_sha256_init, &ft_sha256, &ft_get_sha256_hash, 32 },
 	{ "sha224", &ft_sha224_init, &ft_sha224, &ft_get_sha224_hash, 28 },
 	{ "sha512", &ft_sha512_init, &ft_sha512, &ft_get_sha512_hash, 64 },
-	{ "sha384", &ft_sha384_init, &ft_sha384, &ft_get_sha384_hash, 48 } };
+	{ "sha384", &ft_sha384_init, &ft_sha384, &ft_get_sha384_hash, 48 },
+	{ "sha512-256",
+		&ft_sha512_256_init, &ft_sha512_256, &ft_get_sha512_256_hash, 32 },
+	{ "sha512-224",
+		&ft_sha512_224_init, &ft_sha512_224, &ft_get_sha512_224_hash, 28 } };
+
+static t_hash_func	get_hash_func(char *param)
+{
+	size_t				i;
 
 	i = 0;
-	while (i < sizeof(funcs) / sizeof(t_hash_func))
+	while (i < sizeof(g_funcs) / sizeof(t_hash_func))
 	{
-		if (!ft_strcmp(param, funcs[i].name))
+		if (!ft_strcmp_ignore_case(param, g_funcs[i].name))
 			break ;
 		else if (!ft_strcmp(param, "-h"))
 			ft_error_handle(NULL, USAGE);
 		++i;
 	}
-	if (i == sizeof(funcs) / sizeof(t_hash_func))
+	if (i == sizeof(g_funcs) / sizeof(t_hash_func))
 		ft_error_handle(param, INVALID_OPTION);
-	return (funcs[i]);
+	return (g_funcs[i]);
 }
 
 static t_darr		*parse_sources(int ac, char **av)

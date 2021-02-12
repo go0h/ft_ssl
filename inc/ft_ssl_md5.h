@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 21:17:00 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/11 22:38:46 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/12 20:16:13 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,22 @@ char			*ft_get_sha512_hash(void);
 void			ft_sha384_init(void);
 void			ft_sha384(char *data, size_t cur_size, size_t overall);
 char			*ft_get_sha384_hash(void);
+
+/*
+** SHA512/256 - Hash functions
+*/
+
+void			ft_sha512_256_init(void);
+void			ft_sha512_256(char *data, size_t cur_size, size_t overall);
+char			*ft_get_sha512_256_hash(void);
+
+/*
+** SHA512/224 - Hash functions
+*/
+
+void			ft_sha512_224_init(void);
+void			ft_sha512_224(char *data, size_t cur_size, size_t overall);
+char			*ft_get_sha512_224_hash(void);
 
 /*
 ** UTILITY FUNCTIONS

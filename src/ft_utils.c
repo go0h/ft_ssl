@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 18:46:28 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/11 21:40:01 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/12 20:26:23 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,6 @@ uint32_t	rot32_l(uint32_t num, int shift)
 uint32_t	rot32_r(uint32_t num, int shift)
 {
 	return (num >> shift | (num << (32 - shift)));
-}
-
-uint64_t	rot64_l(uint64_t num, int shift)
-{
-	return (num << shift | (num >> (64 - shift)));
 }
 
 uint64_t	rot64_r(uint64_t num, int shift)

@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 22:31:20 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/11 22:36:59 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/12 20:21:59 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char			*ft_get_sha384_hash(void)
 	int			i;
 	uint64_t	*hash;
 
-	if (!(hash = ft_memalloc(sizeof(uint64_t) * 8)))
+	if (!(hash = ft_memalloc(sizeof(uint64_t) * 6)))
 		return (NULL);
 	i = 0;
 	while (i < 6)
