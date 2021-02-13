@@ -6,11 +6,11 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 21:36:37 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/11 22:27:41 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/13 22:03:47 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_ssl_md5.h"
+#include "ft_sha2.h"
 
 static uint32_t	g_ti[] = {
 	0x428A2F98, 0x71374491, 0xB5C0FBCF, 0xE9B5DBA5,

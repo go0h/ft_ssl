@@ -1,41 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_sha384.c                                        :+:      :+:    :+:   */
+/*   ft_sha512.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/11 22:31:20 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/12 20:21:59 by astripeb         ###   ########.fr       */
+/*   Created: 2021/02/10 12:13:27 by astripeb          #+#    #+#             */
+/*   Updated: 2021/02/13 22:05:44 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_sha.h"
-#include <assert.h>
+#include "ft_sha2.h"
 
 static uint64_t	g_buf[8];
 
-void			ft_sha384_init(void)
+void			ft_sha512_init(void)
 {
-	g_buf[A] = 0xcbbb9d5dc1059ed8;
-	g_buf[B] = 0x629a292a367cd507;
-	g_buf[C] = 0x9159015a3070dd17;
-	g_buf[D] = 0x152fecd8f70e5939;
-	g_buf[E] = 0x67332667ffc00b31;
-	g_buf[F] = 0x8eb44a8768581511;
-	g_buf[G] = 0xdb0c2e0d64f98fa7;
-	g_buf[H] = 0x47b5481dbefa4fa4;
+	g_buf[A] = 0x6a09e667f3bcc908;
+	g_buf[B] = 0xbb67ae8584caa73b;
+	g_buf[C] = 0x3c6ef372fe94f82b;
+	g_buf[D] = 0xa54ff53a5f1d36f1;
+	g_buf[E] = 0x510e527fade682d1;
+	g_buf[F] = 0x9b05688c2b3e6c1f;
+	g_buf[G] = 0x1f83d9abfb41bd6b;
+	g_buf[H] = 0x5be0cd19137e2179;
 }
 
-char			*ft_get_sha384_hash(void)
+char			*ft_get_sha512_hash(void)
 {
 	int			i;
 	uint64_t	*hash;
 
-	if (!(hash = ft_memalloc(sizeof(uint64_t) * 6)))
+	if (!(hash = ft_memalloc(sizeof(uint64_t) * 8)))
 		return (NULL);
 	i = 0;
-	while (i < 6)
+	while (i < 8)
 	{
 		hash[i] = swap_8_bytes(g_buf[i]);
 		++i;
@@ -43,7 +42,7 @@ char			*ft_get_sha384_hash(void)
 	return ((char*)hash);
 }
 
-void			ft_sha384(char *data, size_t cur_size, size_t overall)
+void			ft_sha512(char *data, size_t cur_size, size_t overall)
 {
 	size_t		i;
 	uint64_t	c[8];
@@ -53,8 +52,6 @@ void			ft_sha384(char *data, size_t cur_size, size_t overall)
 		if (!(cur_size = allign_sha512_data(&data, cur_size, overall)))
 			return ;
 	}
-	// temporary
-	assert(cur_size % 128 == 0);
 	i = 0;
 	while (i < cur_size)
 	{

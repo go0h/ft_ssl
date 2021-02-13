@@ -6,24 +6,25 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 21:22:22 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/12 21:32:56 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/13 22:09:13 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_ssl_md5.h"
+#include "ft_ssl.h"
+#include <stdio.h>
 
 static void		usage(const char *msg, t_error err)
 {
 	if (err == USAGE)
 	{
-		ft_printf("Usage: ./ft_ssl_md5 hash_func [pqrs]\n\n");
-		ft_printf("\t-h - for pritn this help\n");
+		ft_printf("Usage: ./ft_ssl hash_func [options]\nOptions:\n");
+		ft_printf("\t-h - for print this help\n");
 		ft_printf("\t-p - echo STDIN to STDOUT and append %s\n",
 		"the checksum to STDOUT");
 		ft_printf("\t-q - quiet mode\n");
 		ft_printf("\t-r - reverse the format of the output\n");
-		ft_printf("\t-s - print the sum of the given string\n");
-		ft_printf("Allowed hash functions:\n");
+		ft_printf("\t-s STRING - print the sum of the given string\n");
+		ft_printf("Realized hash functions:\n");
 		ft_printf("\tmd5    - Message Digest 5\n");
 		ft_printf("\tsha256 (224) - Secure Hash Algorithm\n");
 		ft_printf("\tsha512 (384) - Secure Hash Algorithm\n");
@@ -31,8 +32,8 @@ static void		usage(const char *msg, t_error err)
 	}
 	else if (err == INVALID_OPTION)
 	{
-		ft_printf("./ft_ssl_md5: invalid option -- '%s'\n", msg);
-		ft_printf("Try './ft_ssl_md5 -h' for more information.\n");
+		ft_printf("./ft_ssl: invalid option -- '%s'\n", msg);
+		ft_printf("Try './ft_ssl -h' for more information.\n");
 	}
 	exit(err);
 }
@@ -85,6 +86,8 @@ static int		check_option(char *str, size_t *options)
 		i = 1;
 		if (str[i] == 'h')
 			return (1);
+		if (ft_strlen(str) != 2)
+			return (-1);
 		while (str[i])
 		{
 			if (str[i] > 96 && str[i] < 123)

@@ -6,11 +6,11 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 22:23:01 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/11 22:41:44 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/13 22:05:41 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_sha.h"
+#include "ft_sha2.h"
 
 static uint64_t	g_ti[] = {
 	0x428a2f98d728ae22, 0x7137449123ef65cd,

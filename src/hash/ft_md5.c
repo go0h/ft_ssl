@@ -6,12 +6,11 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 22:03:47 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/12 20:21:21 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/13 21:10:20 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_md5.h"
-#include <assert.h>
 
 static uint32_t		g_buf[4];
 

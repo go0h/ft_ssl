@@ -6,7 +6,7 @@
 #    By: astripeb <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/03 21:08:35 by astripeb          #+#    #+#              #
-#    Updated: 2021/02/12 20:17:21 by astripeb         ###   ########.fr        #
+#    Updated: 2021/02/13 19:14:30 by astripeb         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ BLINK				:= \033[5m
 NORMAL				:= \033[25m
 BOLDU				:= \033[1m\033[4m
 
-NAME				:= ft_ssl_md5
+NAME				:= ft_ssl
 
 #COMPILER
 CC 					:= gcc
@@ -47,7 +47,7 @@ SRC					:= main.c ft_options.c ft_parse_params.c\
 					ft_sha256.c ft_sha224.c ft_sha256_utils.c\
 					ft_sha512.c ft_sha384.c ft_sha512_utils.c\
 					ft_sha512_256.c ft_sha512_224.c\
-					ft_utils.c
+					ft_utils.c ft_print_hash.c
 
 ################################################################################
 #																	 		   #
@@ -55,7 +55,7 @@ SRC					:= main.c ft_options.c ft_parse_params.c\
 
 OBJ					:= $(SRC:.c=.o)
 
-vpath %.c $(SRC_DIR)
+vpath %.c $(SRC_DIR) $(SRC_DIR)/hash
 vpath %.o $(OBJ_DIR)
 vpath %.h $(INC_DIR)
 vpath %.a $(LIB_DIR)

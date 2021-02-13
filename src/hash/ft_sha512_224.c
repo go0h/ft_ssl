@@ -6,16 +6,15 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 20:13:55 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/12 20:15:50 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/13 22:05:33 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_sha.h"
-#include <assert.h>
+#include "ft_sha2.h"
 
 static uint64_t	g_buf[8];
 
-void			ft_sha512_224_init(void)
+void			ft_sha512_224_i(void)
 {
 	g_buf[A] = 0x8C3D37C819544DA2;
 	g_buf[B] = 0x73E1996689DCD4D6;
@@ -27,7 +26,7 @@ void			ft_sha512_224_init(void)
 	g_buf[H] = 0x1112E6AD91D692A1;
 }
 
-char			*ft_get_sha512_224_hash(void)
+char			*ft_get_sha512_224_h(void)
 {
 	int			i;
 	uint64_t	*hash;
@@ -53,8 +52,6 @@ void			ft_sha512_224(char *data, size_t cur_size, size_t overall)
 		if (!(cur_size = allign_sha512_data(&data, cur_size, overall)))
 			return ;
 	}
-	// temporary
-	assert(cur_size % 128 == 0);
 	i = 0;
 	while (i < cur_size)
 	{

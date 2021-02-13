@@ -6,26 +6,25 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 17:51:57 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/12 21:32:38 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/13 22:32:42 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_ssl_md5.h"
+#include "ft_ssl.h"
 
 t_hash_func	g_funcs[] = {
-	{ "md5", &ft_md5_init, &ft_md5, &ft_get_md5_hash, 16 },
-	{ "sha256", &ft_sha256_init, &ft_sha256, &ft_get_sha256_hash, 32 },
-	{ "sha224", &ft_sha224_init, &ft_sha224, &ft_get_sha224_hash, 28 },
-	{ "sha512", &ft_sha512_init, &ft_sha512, &ft_get_sha512_hash, 64 },
-	{ "sha384", &ft_sha384_init, &ft_sha384, &ft_get_sha384_hash, 48 },
-	{ "sha512-256",
-		&ft_sha512_256_init, &ft_sha512_256, &ft_get_sha512_256_hash, 32 },
-	{ "sha512-224",
-		&ft_sha512_224_init, &ft_sha512_224, &ft_get_sha512_224_hash, 28 } };
+	{"MD5", &ft_md5_init, &ft_md5, &ft_get_md5_hash, 16},
+	{"SHA256", &ft_sha256_init, &ft_sha256, &ft_get_sha256_hash, 32},
+	{"SHA224", &ft_sha224_init, &ft_sha224, &ft_get_sha224_hash, 28},
+	{"SHA512", &ft_sha512_init, &ft_sha512, &ft_get_sha512_hash, 64},
+	{"SHA384", &ft_sha384_init, &ft_sha384, &ft_get_sha384_hash, 48},
+	{"SHA512-256", &ft_sha512_256_i, &ft_sha512_256, &ft_get_sha512_256_h, 32},
+	{"SHA512-224", &ft_sha512_224_i, &ft_sha512_224, &ft_get_sha512_224_h, 28}
+};
 
 static t_hash_func	get_hash_func(char *param)
 {
-	size_t				i;
+	size_t	i;
 
 	i = 0;
 	while (i < sizeof(g_funcs) / sizeof(t_hash_func))
@@ -41,66 +40,41 @@ static t_hash_func	get_hash_func(char *param)
 	return (g_funcs[i]);
 }
 
-static t_darr		*parse_sources(int ac, char **av)
+static size_t		count_files(int ac, char **av)
 {
 	int		i;
-	char	*filename;
-	t_darr	*srcs;
+	size_t	cnt;
 
 	i = 0;
-	if (!(srcs = ft_da_new(0, sizeof(char*))))
-		ft_error_handle(__FUNCTION__, MALLOC);
+	cnt = 0;
 	while (i < ac)
 	{
 		if (*av[i] != '-')
-		{
-			if (!(filename = ft_strdup(av[i])) ||
-				!(srcs = ft_da_add(srcs, &filename)))
-			{
-				ft_strdel(&filename);
-				ft_da_iter(srcs, &free_data);
-				ft_da_delete(&srcs);
-				ft_error_handle(__FUNCTION__, MALLOC);
-			}
-		}
+			++cnt;
 		++i;
 	}
-	return (ft_da_shrink(srcs));
+	return (cnt);
 }
 
-void				free_data(void *data)
-{
-	free((char*)*(size_t*)data);
-}
+/*
+**	./ft_ssl md5 -s string
+**	./ft_ssl md5 -p STDIN
+**	./ft_ssl md5 -q
+**	./ft_ssl md5 -r
+*/
 
-void				free_ssl(t_ssl **ssl)
-{
-	if (ssl != NULL && *ssl != NULL)
-	{
-		ft_da_iter((*ssl)->sources, &free_data);
-		ft_da_delete(&(*ssl)->sources);
-		ft_bzero(*ssl, sizeof(t_ssl));
-		free(*ssl);
-	}
-}
-
-t_ssl				*ft_parse_params(int ac, char **av)
+t_ssl				ft_parse_params(int ac, char **av)
 {
 	t_ssl	ssl;
-	t_ssl	*p_ssl;
 
+	ft_bzero(&ssl, sizeof(t_ssl));
 	if (ac < 2)
 		ft_error_handle(NULL, USAGE);
 	ssl.hash_func = get_hash_func(av[1]);
 	if (ac > 2)
-		ssl.options = ft_options(ac - 1, &av[1]);
-	ssl.sources = parse_sources(ac - 2, &av[2]);
-	if (!ssl.sources || !(p_ssl = (t_ssl*)ft_memalloc(sizeof(t_ssl))))
 	{
-		ft_da_iter(ssl.sources, &free_data);
-		ft_da_delete(&ssl.sources);
-		ft_error_handle(__FUNCTION__, MALLOC);
+		ssl.options = ft_options(ac - 1, &av[1]);
+		ssl.files = count_files(ac - 2, &av[2]);
 	}
-	ft_memcpy(p_ssl, &ssl, sizeof(t_ssl));
-	return (p_ssl);
+	return (ssl);
 }
