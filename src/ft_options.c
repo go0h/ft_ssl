@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 21:22:22 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/13 22:09:13 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/14 13:56:40 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,7 @@ static void		usage(const char *msg, t_error err)
 		ft_printf("\t-q - quiet mode\n");
 		ft_printf("\t-r - reverse the format of the output\n");
 		ft_printf("\t-s STRING - print the sum of the given string\n");
-		ft_printf("Realized hash functions:\n");
-		ft_printf("\tmd5    - Message Digest 5\n");
-		ft_printf("\tsha256 (224) - Secure Hash Algorithm\n");
-		ft_printf("\tsha512 (384) - Secure Hash Algorithm\n");
-		ft_printf("\tsha512_256 (224) - Secure Hash Algorithm\n");
+		ft_print_md_commands();
 	}
 	else if (err == INVALID_OPTION)
 	{

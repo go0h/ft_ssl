@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 21:17:00 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/13 22:26:35 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/14 14:34:13 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,11 @@ typedef struct	s_ssl
 }				t_ssl;
 
 enum { A, B, C, D, E, F, G, H };
+
+void			process_string(t_ssl *ssl, char *data);
+void			process_stdin(t_ssl *ssl);
+void			process_file(t_ssl *ssl, char *filename);
+t_hash_func		*get_hash_func(char *param);
 
 /*
 ** MD5 - Hash functions
@@ -108,12 +113,15 @@ char			*ft_get_sha512_224_h(void);
 /*
 ** UTILITY FUNCTIONS
 */
+void			ft_print_md_commands(void);
 
 size_t			ft_options(int ac, char **av);
 
 t_ssl			ft_parse_params(int ac, char **av);
 
-void			ft_print_ssl_hash(t_ssl ssl, char *source, char *hash);
+void			ft_print_hash_from_fd(t_ssl ssl, char *source, char *hash);
+
+void			ft_print_hash_from_str(t_ssl ssl, char *source, char *hash);
 
 void			ft_error_handle(const char *msg, t_error err);
 
