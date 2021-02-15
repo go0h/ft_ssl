@@ -8,7 +8,11 @@ hashes=(md5 sha256 sha224 sha512 sha384 sha512-256 sha512-224)
 
 for item in ${hashes[*]}
 do
-	diff <(echo "pickle rick" | openssl ${item}) <(echo "pickle rick" | ./ft_ssl ${item}) > res
+	touch empty
+	diff <(openssl ${item} empty) <(./ft_ssl ${item} empty) > res
+	rm -rf empty
+
+	diff <(echo "pickle rick" | openssl ${item}) <(echo "pickle rick" | ./ft_ssl ${item}) >> res
 
 	diff <(echo "" | openssl ${item}) <(echo "" | ./ft_ssl ${item}) >> res
 
