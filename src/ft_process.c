@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 13:11:16 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/14 17:14:54 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/19 21:49:14 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,11 @@ void	process_file(t_ssl *ssl, char *filename)
 		size_in_bytes += n;
 		ssl->hash_func.func((char*)&buf, n, size_in_bytes);
 	}
-	if (!size_in_bytes)
+	if (!size_in_bytes && n >= 0)
 		ssl->hash_func.func((char*)&buf, n, size_in_bytes);
-	ft_print_hash_from_fd(*ssl, filename, ssl->hash_func.get());
+	if (n >= 0)
+		ft_print_hash_from_fd(*ssl, filename, ssl->hash_func.get());
+	else
+		ft_fprintf(STDERR_FILENO, "Can't read %s\n", filename);
 	close(fd);
 }

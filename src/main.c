@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 21:06:51 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/14 15:02:28 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/19 22:00:59 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ static void	process_interactive(void)
 
 	ft_bzero(&ssl, sizeof(t_ssl));
 	ft_printf("ft_ssl> ");
-	while ((n = read(STDIN_FILENO, &command, 256)) > 0)
+	while ((n = read(STDIN_FILENO, (char*)&command, 256)) > 0)
 	{
 		command[n] = '\0';
-		if (get_param(command, &ssl.hash_func))
+		if (get_param((char*)&command, &ssl.hash_func))
 			process_stdin(&ssl);
 		ft_printf("ft_ssl> ");
 	}

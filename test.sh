@@ -54,6 +54,16 @@ do
 
 	diff <(./ft_ssl ${item} src/hash/*) <(openssl ${item} src/hash/*) >> res
 
+	echo "" | ./ft_ssl ${item} -p -q -s "dd" | grep fault >> res
+	./ft_ssl -e | grep fault >> res
+
+	touch testfile
+	chmod 000 testfile
+	echo "" | ./ft_ssl ${temp} | grep fault >> res
+	rm -rf testfile
+
+	./ft_ssl ${temp} ~/Downloads/* | grep fault >> res
+
 	if [ -z "$(cat res)" ] ;
 		then printf "${GREEN}${item} - OK${EOC}\t${COR}\n"
 		else printf "${RED}${item} - KO${EOC}\t${COR}\n$(cat res)\n"
